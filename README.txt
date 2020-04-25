@@ -1,55 +1,45 @@
 Multithreaded Grep
-Условие
-Всяка операционна система предлага функционалност за търсене на низ във файлове: като например конзолната команда grep в Unix/Linux. Ще създадем програма за претърсване на директорно дърво с текстови файлове за даден низ.
+Each operating system offers string search functionality: such as the console grep command in Unix / Linux. We will create a directory tree search program with text files for a given string.
 
-В едно директорно дърво може да има:
+A directory tree may have:
 
-поддиректории, на произволна дълбочина на влагане
-текстови файлове
-Целта на програмата е да намери всички срещания на даден символен низ в текстовите файлове в това дърво.
+- subdirectories, at any depth of insertion
+- text files
+The purpose of the program is to find all occurrences of a character string in the text files in that tree.
 
-За всяко такова срещане, на конзолата или в определен файл (в зависимост от подадените параметри) трябва да се изведе ред в следния формат:
+For each such appointment, the console or in a specific file (depending on the parameters submitted) should be displayed in the following format:
 
-path:line_number:line_text
-където:
+path: line_number: line_text
+where:
 
-path е относителният път на файла спрямо началната директория
-line_number е номерът на реда във файла, като броенето започва от 1
-line_text е съдържанието на реда, включващ търсения низ
-С цел ефективност, решението трябва да е многонишково, т.е. няколко паралелно изпълняващи се нишки трябва да си разпределят работата, като се синхронизират по подходящ начин, така че резултатът да е коректен.
+path is the relative path of the file to the home directory
+line_number is the line number in the file, starting counting from 1
+line_text is the contents of the line including the searched string
+For the sake of efficiency, the solution must be multi-threaded, ie. several parallel running threads should distribute the work, synchronizing appropriately so that the result is correct.
 
-Нека главният клас се казва Main и се намира в пакет bg.sofia.uni.fmi.mjt.grep. Той ще чете от конзолата grep команди и ще ги изпълнява. Всяка grep команда има следния вид:
+Let the main class be called Main and it is bg.sofia.uni.fmi.mjt.grep. It will read and execute grep commands from the console. Each grep command has the following form:
 
-grep *[-w|-i] [string_to_find] [path_to_directory_tree] [number_of_parallel_threads] *[path_to_output_file]
+grep * [- w | -i] [string_to_find] [path_to_directory_tree] [number_of_parallel_threads] * [path_to_output_file]
 
--w|-i - параметри по избор
--w - указва на grep командата да търси само цели думи (т.е "hi" няма да match-не "hippo", но ще match-не "hi there")
--i - указва на grep командата да игнорира case sensitivity (т.е "hi" e същото като "Hi")
-string_to_find - търсения низ
-path_to_directory_tree - път до корена на директорното дърво
-number_of_parallel_threads - максималния брой паралелно изпълняващи се нишки
-path_to_output_file (параметър по избор) - път до файл, в който да се запише изходът от изпълнението на командата grep. Ако този параметър не е указан, тогава изходът от програмата трябва да се изведе на конзолата.
-*параметри по избор
+-w | -i - optional parameters
+-w - instructs the grep command to search for entire words only (ie "hi" will not match-not "hippo", but will match-not "hi there")
+-i - instructs the grep command to ignore case sensitivity (ie "hi" is the same as "Hi")
+string_to_find - string search
+path_to_directory_tree - The path to the root of the directory tree
+number_of_parallel_threads - the maximum number of threads running in parallel
+path_to_output_file (optional parameter) - path to a file where the output of the grep command execution is written. If this parameter is not specified, then exit the program from the console.
+* optional parameters
 
-Забележки:
+Notes:
 
-Има различни валидни начини алгоритъмът да се паралелизира, т.е. да се възползва от наличието на няколко нишки
-В зависимост от операционната система, вида storage, който ползва файловата система (HDD, SSD) и т.н. ще забележите, че броят паралелни нишки от един момент нататък не подобрява бързодействието, а може дори да го забави. Това е очаквано и не е признак, че решението ви не е коректно.
-След изпълнението на grep операцията вашият java процес трябва да приключи и да освободи алокираните ресурси.
-Уверете се, че решенията ви биха работили коректно под всякаква операционна система. Т.е уверете се, че не сте hard-code-нали нещо специфично за операционната система (като path separator).
-Примери
-grep foo /Users/my-user/git/java-course 2
-01-intro-to-java/lab/02-anagrams/AnagramTest.java:73:		assertFalse(anagram.isAnagram("food fd"));
-06-io-streams/lecture/PITCHME.md:633:// -> "Unable to open file 'food': No such file or directory"
+There are various valid ways to parallelize the algorithm, ie. to take advantage of having multiple threads
+Depending on the operating system, the type of storage used by the file system (HDD, SSD), etc. you will notice that the number of parallel threads from one moment onwards does not improve the performance and may even slow it down. This is expected and is not a sign that your decision is incorrect.
+After performing the grep operation, your java process must complete and release the allocated resources.
+Make sure your solutions work correctly under any operating system. That is, make sure that you are not a hard-code-something operating system-specific (such as a path separator).
+Examples
+grep foo / Users / my-user / git / java-course 2
+01-intro-to-java / lab / 02-anagrams / AnagramTest.java: 73: assertFalse (anagram.isAnagram ("food fd"));
+06-io-streams / lecture / PITCHME.md: 633: // -> "Unable to open file 'food': No such file or directory"
 # [...]
 
-grep -wi foo /Users/my-user/git/java-course 4 /Users/my-user/output.txt
-Качване в grader-a
-Качете zip архив на директорията src.
-
-Оценяване
-Решението може да ви донесе до 100 точки, като ще бъде оценявано:
-
-за функционална пълнота и коректност
-за ефективност
-за добър дизайн и чист код
+grep -wi foo / Users / my-user / git / java-course 4 /Users/my-user/output.txt
